@@ -197,13 +197,18 @@ namespace gnaDataClasses
 
     }
 
-
-    public class gnaDataClasses
+    public class Car
     {
+        public string? Model { get; set; }
+        public string? Color { get; set; }
+    }
 
 
-        public void helloWorld() {
-            Console.WriteLine("hello world");  
+    public class gnaDataClass
+    {
+        public void helloWorld()
+        {
+            Console.WriteLine("hello world");
         }
 
     }
