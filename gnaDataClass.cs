@@ -208,7 +208,7 @@ namespace gnaDataClasses
     {
         public void helloWorld()
         {
-            Console.WriteLine("hello world");
+            Console.WriteLine("hello world from gnaDataClass");
         }
 
     }
