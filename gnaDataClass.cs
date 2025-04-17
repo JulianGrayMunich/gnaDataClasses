@@ -5,6 +5,51 @@ using System.Data.Common;
 
 namespace gnaDataClasses
 {
+
+    public class Points
+    {
+        // Metadata
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+        public string? Count { get; set; }
+        public string? Type { get; set; }
+        public string? UTCtime { get; set; }
+        public string? isOutlier { get; set; }
+
+        // Reference coordinates
+        public double Nref { get; set; }
+        public double Eref { get; set; }
+        public double Href { get; set; }
+
+        // Displacements
+        public double dN { get; set; }
+        public double dE { get; set; }
+        public double dH { get; set; }
+
+        // Absolute coordinates
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+
+        // Mean coordinates
+        public double MeanN { get; set; }
+        public double MeanE { get; set; }
+        public double MeanH { get; set; }
+
+
+        // Derived metrics
+        public double dS { get; set; }
+        public double dR { get; set; }
+        public double dT { get; set; }
+
+        // Time metrics
+        public string? TimeBlockStartUTC { get; set; }
+        public string? TimeBlockEndUTC { get; set; }
+    }
+
+    //============================================================
+
+
     public class SPN010
     {
         public double ShortTwistAmber { get; set; }
@@ -77,6 +122,8 @@ namespace gnaDataClasses
         public double PercentageSuccess { get; set; }
         public string? TimeBlockStart { get; set; }
         public string? TimeBlockEnd { get; set; }
+        public int Col { get; set; }
+        public int Row { get; set; }
 
     }
 
@@ -127,6 +174,19 @@ namespace gnaDataClasses
         public string? Note1 { get; set; }
     }
 
+
+    public class ATSCoords
+    {
+        public string? Name { get; set; }
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+        public double OrientationGons { get; set; }
+
+        //public static ObservableCollection<PrismCoords>
+    }
+
+
     public class Prism
     {
         public string? SensorID { get; set; }       // this is a string as it could contain 'Missing'
@@ -137,6 +197,9 @@ namespace gnaDataClasses
         public double dN { get; set; }
         public double dE { get; set; }
         public double dH { get; set; }
+        public double dS { get; set; }
+        public double dR { get; set; }
+        public double dT { get; set; }
         public double N { get; set; }
         public double E { get; set; }
         public double H { get; set; }
@@ -154,6 +217,13 @@ namespace gnaDataClasses
         public double? dTtrigger { get; set; }
         public double? dHtrigger { get; set; }
         public double? Chainage { get; set; }
+        public int? ExcelRow { get; set; }
+        public string? dS_Trigger_color { get; set; }
+        public string? dH_Trigger_color { get; set; }
+        public string? dR_Trigger_color { get; set; }
+        public string? dT_Trigger_color { get; set; }
+
+
     }
 
     public class Deltas
@@ -203,6 +273,112 @@ namespace gnaDataClasses
         public string? Color { get; set; }
     }
 
+    public class PrismStatsTable
+    {
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
+        public string? ATS { get; set; }       // this is a string as it could contain 'Missing'
+        public int ObservationCount { get; set; }
+        public int MaxObservationCount { get; set; }
+        public double PercentageSuccess { get; set; }
+        public string? TimeBlockStart { get; set; }
+        public string? TimeBlockEnd { get; set; }
+        public string? TimeBlockColumnHeader { get; set; }
+        public int Col { get; set; }
+        public int Row { get; set; }
+        public int Index { get; set; }
+
+    }
+
+    public class TransCoords
+    {
+        public string? Name { get; set; }
+        public double Nlocal { get; set; }
+        public double Elocal { get; set; }
+        public double Hlocal { get; set; }
+        public double Nmain { get; set; }
+        public double Emain { get; set; }
+        public double Hmain { get; set; }
+        public double dS { get; set; }
+        public double dH { get; set; }
+        public double OrrCorr { get; set; }
+
+        public double ObservedHA { get; set; }
+
+        public double ObservedVA { get; set; }
+
+        public double ObservedSD { get; set; }
+    }
+
+    public class ControlPrisms
+    {
+        public string? Name { get; set; }
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+        public double slopeDist { get; set; }
+        public double prismConst { get; set; }
+    }
+
+    public class PrismCoords
+    {
+
+        public string? Name { get; set; }
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+
+        public double settopHa { get; set; }
+        public double settopVa { get; set; }
+        public double settopSD { get; set; }
+
+        public double joinHa { get; set; }
+        public double joinVa { get; set; }
+        public double joinSD { get; set; }
+
+        public double prismConst { get; set; }
+
+        //public static ObservableCollection<PrismCoords>
+    }
+
+    public class OrientationObservations
+    {
+        public bool IsUsed { get; set; }
+        public string? Name { get; set; }
+        public double HA { get; set; }
+        public double VA { get; set; }
+        public double SD { get; set; }
+        public double prismConst { get; set; }
+    }
+
+    public class RailTags
+    {
+        public string? LeftRailTag { get; set; }
+        public string? RightRailTag { get; set; }
+
+    }
+
+    public class ToR
+    {
+        public string? Name { get; set; }
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+    }
+
+    public class Combined
+    {
+        public string? PrismName { get; set; }
+        public double PrismE { get; set; }
+        public double PrismN { get; set; }
+        public double PrismH { get; set; }
+        public string? TORName { get; set; }
+        public double TORE { get; set; }
+        public double TORN { get; set; }
+        public double TORH { get; set; }
+
+    }
 
     public class gnaDataClass
     {
