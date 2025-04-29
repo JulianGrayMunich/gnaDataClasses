@@ -194,6 +194,7 @@ namespace gnaDataClasses
         public double Nref { get; set; }
         public double Eref { get; set; }
         public double Href { get; set; }
+
         public double dN { get; set; }
         public double dE { get; set; }
         public double dH { get; set; }
@@ -388,4 +389,29 @@ namespace gnaDataClasses
         }
 
     }
+
+
+    public class JWG_Prisms
+    {
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+        public string? TimeLocalref { get; set; }
+        public double Nref { get; set; }
+        public double Eref { get; set; }
+        public double TORref { get; set; }
+
+        public string? TimeLocalprevious { get; set; }
+        public double Nprevious { get; set; }
+        public double Eprevious { get; set; }
+        public double TORprevious { get; set; }
+
+        public string? TimeLocalcurrent { get; set; }
+        public double Ncurrent{ get; set; }
+        public double Ecurrent { get; set; }
+        public double TORcurrent{ get; set; }
+    }
+
+
+
+
 }
