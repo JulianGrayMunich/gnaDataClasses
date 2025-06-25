@@ -393,25 +393,94 @@ namespace gnaDataClasses
 
     public class JWG_Prisms
     {
+        public string? Count { get; set; }
+        public string? Code { get; set; }
         public string? SensorID { get; set; }
         public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
         public string? TimeLocalref { get; set; }
         public double Nref { get; set; }
         public double Eref { get; set; }
+        public double Href { get; set; }    
         public double TORref { get; set; }
-
         public string? TimeLocalprevious { get; set; }
-        public double Nprevious { get; set; }
-        public double Eprevious { get; set; }
-        public double TORprevious { get; set; }
+        public double? Nprevious { get; set; }
+        public double? Eprevious { get; set; }
+
+        public double? Hprevious { get; set; }   
+        public double? TORprevious { get; set; }
 
         public string? TimeLocalcurrent { get; set; }
-        public double Ncurrent{ get; set; }
-        public double Ecurrent { get; set; }
-        public double TORcurrent{ get; set; }
+        public double? Ncurrent { get; set; }
+        public double? Ecurrent { get; set; }
+
+        public double? Hcurrent { get; set; }
+
+        public double? TORcurrent { get; set; }
+
+        public double? dRref { get; set; }
+        public double? dTref { get; set; }
+        public double? dHref { get; set; }
+
+        public double? dRprevious { get; set; }
+        public double? dTprevious { get; set; }
+        public double? dHprevious { get; set; }
+
+        public double? dRcurrent { get; set; }
+        public double? dTcurrent { get; set; }
+        public double? dHcurrent { get; set; }
+
     }
 
 
+    public class JWG_TrackGeometry
+    {
+        public string? Code { get; set; }
+        public string? ReplacementName { get; set; }
+        public string? Name { get; set; }
+        public int Row { get; set; }
+        public string? Point { get; set; }
+        public string? Rail { get; set; }
+        public double SlewReferenceCurrent { get; set; }
+        public double SlewPreviousCurrent { get; set; }
+        public double ReferenceCurrentHeave { get; set; }
+        public double PreviousCurrentHeave { get; set; }
+
+        public double CantReference { get; set; }
+        public double CantPrevious { get; set; }
+        public double CantCurrent { get; set; }
+
+        public double TwistReference { get; set; }
+        public double TwistPrevious { get; set; }
+        public double TwistCurrent { get; set; }
+
+        public double dH { get; set; }
+
+        public double dHreference { get; set; }
+        public double dHprevious { get; set; }
+        public double dHcurrent { get; set; }
 
 
+        public double RadDispl_RefToCur { get; set; }
+        public double RadDispl_PrevToCur { get; set; }
+        public double TanDispl_RefToCur { get; set; }
+        public double TanDispl_PrevToCur { get; set; }
+        public double RadTilt_RefToCur { get; set; }
+        public double TanTilt_RefToCur { get; set; }
+        public double RadTilt_PrevToCur { get; set; }
+        public double TanTilt_PrevToCur { get; set; }
+
+        public double Heave_RefToCur { get; set; }
+        public double Heave_PrevToCur { get; set; }
+
+        public double RadAng_RefToCur { get; set; }
+        public double RadAng_PrevToCur { get; set; }
+
+        public double TanAng_RefToCur { get; set; }
+        public double TanAng_PrevToCur { get; set; }
+
+
+        
+
+    }
 }
