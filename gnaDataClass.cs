@@ -1,10 +1,30 @@
 ﻿using System;
 using System.Data.Common;
+using System.Reflection;
 
 
 
 namespace gnaDataClasses
 {
+
+    public class BuildInfo
+    {
+        public static string BuildDateString()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var location = assembly.Location;
+            var buildDate = File.GetLastWriteTime(location); // local machine time
+            return buildDate.ToString("yyyyMMdd");
+        }
+    }
+
+
+
+
+
+
+
+
 
     public class Points
     {
@@ -48,6 +68,39 @@ namespace gnaDataClasses
     }
 
     //============================================================
+
+    public class EmailCredentials
+    {
+        public string? EmailLogin { get; set; }
+        public string? EmailPassword { get; set; }
+        public string? EmailFrom { get; set; }
+        public string? EmailRecipients { get; set; }
+    }
+
+
+
+    public class SensorInfo
+    {
+        public int SensorID { get; set; }
+        public string? SensorName { get; set; }
+        public string? ATS { get; set; }
+        public string? Read { get; set; }
+        public int Yes { get; set; }
+        public int No { get; set; }
+
+    }
+
+
+    public class AlarmState
+    {
+        public string? ATSname { get; set; }
+        public string? Settop { get; set; }
+        public string? previousAlarmState { get; set; }
+        public string? currentAlarmState { get; set; }
+        public int Yes { get; set; }
+        public int No { get; set; }
+        public string? StateChange { get; set; }
+    }
 
 
     public class SPN010
@@ -404,31 +457,31 @@ namespace gnaDataClasses
         public double Href { get; set; }    
         public double TORref { get; set; }
         public string? TimeLocalprevious { get; set; }
-        public double? Nprevious { get; set; }
-        public double? Eprevious { get; set; }
+        public double Nprevious { get; set; }
+        public double Eprevious { get; set; }
 
-        public double? Hprevious { get; set; }   
-        public double? TORprevious { get; set; }
+        public double Hprevious { get; set; }   
+        public double TORprevious { get; set; }
 
         public string? TimeLocalcurrent { get; set; }
-        public double? Ncurrent { get; set; }
-        public double? Ecurrent { get; set; }
+        public double Ncurrent { get; set; }
+        public double Ecurrent { get; set; }
 
-        public double? Hcurrent { get; set; }
+        public double Hcurrent { get; set; }
 
-        public double? TORcurrent { get; set; }
+        public double TORcurrent { get; set; }
 
-        public double? dRref { get; set; }
-        public double? dTref { get; set; }
-        public double? dHref { get; set; }
+        public double dRref { get; set; }
+        public double dTref { get; set; }
+        public double dHref { get; set; }
 
-        public double? dRprevious { get; set; }
-        public double? dTprevious { get; set; }
-        public double? dHprevious { get; set; }
+        public double dRprevious { get; set; }
+        public double dTprevious { get; set; }
+        public double dHprevious { get; set; }
 
-        public double? dRcurrent { get; set; }
-        public double? dTcurrent { get; set; }
-        public double? dHcurrent { get; set; }
+        public double dRcurrent { get; set; }
+        public double dTcurrent { get; set; }
+        public double dHcurrent { get; set; }
 
     }
 
