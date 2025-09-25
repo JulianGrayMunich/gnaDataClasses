@@ -19,13 +19,6 @@ namespace gnaDataClasses
     }
 
 
-
-
-
-
-
-
-
     public class Points
     {
         // Metadata
