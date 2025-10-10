@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Reflection;
 
 
@@ -9,12 +10,47 @@ namespace gnaDataClasses
 
     public class BuildInfo
     {
-        public static string BuildDateString()
+        /// <summary>
+        /// Returns a build/date stamp derived from the best available executable image timestamp.
+        /// Falls back to UTC now if no valid file path can be resolved.
+        /// </summary>
+        public static string BuildDateString(string format = "yyyyMMdd")
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var location = assembly.Location;
-            var buildDate = File.GetLastWriteTime(location); // local machine time
-            return buildDate.ToString("yyyyMMdd");
+            try
+            {
+                // 1) Prefer the entry assembly (the EXE in normal runs)
+                var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+                string? path = asm.Location;
+
+                // 2) If empty or nonexistent, try the current process path (NET 6+)
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                    path = Environment.ProcessPath;
+
+                // 3) Try MainModule file name
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                    path = Process.GetCurrentProcess().MainModule?.FileName;
+
+                // 4) Last resort: look for an .exe in the base directory
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                {
+                    var baseDir = AppContext.BaseDirectory;
+                    path = Directory.EnumerateFiles(baseDir, "*.exe", SearchOption.TopDirectoryOnly)
+                                    .FirstOrDefault();
+                }
+
+                // If all else fails, use current time (won't throw)
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                    return DateTime.Now.ToString(format);
+
+                // Use the file's last write time as a proxy for build time
+                var dtLocal = File.GetLastWriteTime(path);
+                return dtLocal.ToString(format);
+            }
+            catch
+            {
+                // Absolute safety net
+                return DateTime.Now.ToString(format);
+            }
         }
     }
 
