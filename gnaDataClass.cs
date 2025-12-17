@@ -143,6 +143,35 @@ namespace gnaDataClasses
 
     }
 
+    //$$$$$$$$
+    public class GKAdata
+    {
+        public string? ATSname { get; set; } //1
+        public string? TargetName { get; set; } //1
+        public string? UTCtime { get; set; }
+        public Int16 Face { get; set; } //6
+        public double Ha { get; set; } //10
+        public double Va { get; set; } //12
+        public double SD { get; set; } //7
+        public double PsmOffset { get; set; } //15
+        public Int16 Rounds { get; set; }
+
+    }
+
+    // public class FieldObservation
+//    {
+//        public string? TargetName { get; set; } //1
+//        public string? UTCtime { get; set; }
+//        public Int16 Face { get; set; } //6
+//        public double Ha { get; set; } //10
+//        public double Va { get; set; } //12
+//        public double SD { get; set; } //7
+//        public double PsmOffst { get; set; } //15
+
+//        public Int16 Rounds{ get; set; }
+//}
+
+
     public class Observation
     {
         public int? index { get; set; }
@@ -158,8 +187,6 @@ namespace gnaDataClasses
         public double dT { get; set; }
         public double PsmOffst { get; set; }
         public string? railBracket { get; set; }
-
-
     }
 
     public class ATSstats
@@ -245,11 +272,23 @@ namespace gnaDataClasses
 
     }
 
+
+
+    public class ATSDetails
+    {
+        public string ATSName { get; init; } = string.Empty;
+        public string GKAFilePath { get; init; } = string.Empty;
+        public double E { get; set; }
+        public double N { get; set; }
+        public double H { get; set; }
+    }
+
+
     public class ATS
     {
         public string? Name { get; set; }
-        public double N { get; set; }
         public double E { get; set; }
+        public double N { get; set; }
         public double H { get; set; }
         public string? Settop { get; set; }
         public string? ROlist { get; set; }
@@ -404,10 +443,12 @@ namespace gnaDataClasses
         public double prismConst { get; set; }
     }
 
+
     public class PrismCoords
     {
-
+        public string? ATSname { get; set; }
         public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
         public double N { get; set; }
         public double E { get; set; }
         public double H { get; set; }
@@ -562,7 +603,20 @@ namespace gnaDataClasses
         public double TanAng_PrevToCur { get; set; }
 
 
-        
+
 
     }
+
+
+    //==================[Specific limited use classes]===================================
+
+    public class Join3DResult
+    {
+        public double Ha { get; init; }
+        public double Va { get; init; }
+        public double SD { get; init; }
+    }
+
+
+
 }
