@@ -283,7 +283,6 @@ namespace gnaDataClasses
         public double H { get; set; }
     }
 
-
     public class ATS
     {
         public string? Name { get; set; }
