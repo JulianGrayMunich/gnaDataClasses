@@ -132,6 +132,18 @@ namespace gnaDataClasses
     }
 
 
+    public class GKAmeanLimits
+    {
+        public double HA { get; set; }
+        public double VA { get; set; }
+        public double SD { get; set; }
+
+    }
+
+
+
+
+
     public class SPN010
     {
         public double ShortTwistAmber { get; set; }
@@ -154,7 +166,7 @@ namespace gnaDataClasses
         public double Va { get; set; } //12
         public double SD { get; set; } //7
         public double PsmOffset { get; set; } //15
-        public Int16 Rounds { get; set; }
+        public Int16 ObservationCount { get; set; }
 
     }
 
@@ -443,6 +455,11 @@ namespace gnaDataClasses
     }
 
 
+
+
+    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
     public class PrismCoords
     {
         public string? ATSname { get; set; }
@@ -460,9 +477,13 @@ namespace gnaDataClasses
         public double joinVa { get; set; }
         public double joinSD { get; set; }
 
+        public double dR { get; set; }
+        public double dT { get; set; }
+
         public double prismConst { get; set; }
 
-        //public static ObservableCollection<PrismCoords>
+        public int readingCount { get; set; }
+
     }
 
     public class OrientationObservations
