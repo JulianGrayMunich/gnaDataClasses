@@ -144,6 +144,8 @@ namespace gnaDataClasses
 
 
 
+
+
     public class SPN010
     {
         public double ShortTwistAmber { get; set; }
