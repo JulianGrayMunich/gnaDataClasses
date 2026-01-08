@@ -75,6 +75,11 @@ namespace gnaDataClasses
         public double dE { get; set; }
         public double dH { get; set; }
 
+        // Corrections
+        public double dNcor { get; set; }
+        public double dEcor { get; set; }
+        public double dHcor { get; set; }
+
         // Absolute coordinates
         public double N { get; set; }
         public double E { get; set; }
