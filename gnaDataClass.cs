@@ -8,6 +8,9 @@ using System.Reflection;
 namespace gnaDataClasses
 {
 
+#pragma warning disable IDE1006
+
+
     public class BuildInfo
     {
         /// <summary>
@@ -60,6 +63,7 @@ namespace gnaDataClasses
         // Metadata
         public string? SensorID { get; set; }
         public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
         public string? Count { get; set; }
         public string? Type { get; set; }
         public string? UTCtime { get; set; }
@@ -162,7 +166,7 @@ namespace gnaDataClasses
 
     }
 
-    //$$$$$$$$
+
     public class GKAdata
     {
         public string? ATSname { get; set; } //1
@@ -531,14 +535,7 @@ namespace gnaDataClasses
 
     }
 
-    public class gnaDataClass
-    {
-        public void helloWorld()
-        {
-            Console.WriteLine("hello world from gnaDataClass");
-        }
 
-    }
 
 
     public class JWG_Prisms
