@@ -9,7 +9,7 @@ namespace gnaDataClasses
 {
 
 #pragma warning disable IDE1006
-
+#pragma warning disable NU1510
 
     public class BuildInfo
     {
