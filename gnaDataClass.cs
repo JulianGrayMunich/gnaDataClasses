@@ -326,7 +326,7 @@ namespace gnaDataClasses
         public double H { get; set; }
         public double OrientationGons { get; set; }
 
-        //public static ObservableCollection<PrismCoords>
+
     }
 
 
@@ -422,7 +422,7 @@ namespace gnaDataClasses
         public string? SensorID { get; set; }
         public string? Name { get; set; }
         public string? ReplacementName { get; set; }
-        public string? ATS { get; set; }       // this is a string as it could contain 'Missing'
+        public string? ATS { get; set; } 
         public int ObservationCount { get; set; }
         public int MaxObservationCount { get; set; }
         public double PercentageSuccess { get; set; }
@@ -457,6 +457,7 @@ namespace gnaDataClasses
 
     public class ControlPrisms
     {
+        public string? SensorID { get; set; }
         public string? Name { get; set; }
         public double N { get; set; }
         public double E { get; set; }
@@ -473,6 +474,7 @@ namespace gnaDataClasses
 
     public class PrismCoords
     {
+        public string? SensorID { get; set; }
         public string? ATSname { get; set; }
         public string? Name { get; set; }
         public string? ReplacementName { get; set; }
