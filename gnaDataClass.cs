@@ -58,6 +58,8 @@ namespace gnaDataClasses
     }
 
 
+
+
     public class Points
     {
         // Metadata
@@ -632,6 +634,34 @@ namespace gnaDataClasses
 
 
     }
+
+
+
+    // for project performance software
+    public sealed class PrismIdentity
+    {
+        public string SensorId { get; init; } = string.Empty;
+        public string PrismName { get; init; } = string.Empty;
+        public string? ReplacementName { get; init; }
+        public string AtsName { get; init; } = string.Empty;
+
+        // Optional but recommended for traceability/debugging
+        public int SurveyRow { get; init; }
+    }
+
+    public sealed class PrismTimeBlockCount
+    {
+        public string SensorId { get; init; } = string.Empty;
+        public DateTime BlockStartUtc { get; init; }
+        public DateTime BlockEndUtc { get; init; }
+        public int ObservationCount { get; init; }
+    }
+
+
+
+
+
+
 
 
     //==================[Specific limited use classes]===================================
