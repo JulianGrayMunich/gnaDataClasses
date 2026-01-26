@@ -184,17 +184,17 @@ namespace gnaDataClasses
     }
 
     // public class FieldObservation
-//    {
-//        public string? TargetName { get; set; } //1
-//        public string? UTCtime { get; set; }
-//        public Int16 Face { get; set; } //6
-//        public double Ha { get; set; } //10
-//        public double Va { get; set; } //12
-//        public double SD { get; set; } //7
-//        public double PsmOffst { get; set; } //15
+    //    {
+    //        public string? TargetName { get; set; } //1
+    //        public string? UTCtime { get; set; }
+    //        public Int16 Face { get; set; } //6
+    //        public double Ha { get; set; } //10
+    //        public double Va { get; set; } //12
+    //        public double SD { get; set; } //7
+    //        public double PsmOffst { get; set; } //15
 
-//        public Int16 Rounds{ get; set; }
-//}
+    //        public Int16 Rounds{ get; set; }
+    //}
 
 
     public class Observation
@@ -245,21 +245,50 @@ namespace gnaDataClasses
 
     }
 
+    //&&&&&&&&&&&&&&
+    public sealed class ATSIdentity
+    {
+        public string ATS { get; init; } = string.Empty;
+        public int PrismCount { get; init; }
+    }
+
+
+
+
+
+
+
+
+
+
+
     public class PrismStats
     {
+        // Identity (copied from PrismIdentity for reporting convenience)
         public string? SensorID { get; set; }
         public string? Name { get; set; }
         public string? ReplacementName { get; set; }
-        public string? ATS { get; set; }       // this is a string as it could contain 'Missing'
+        public string? ATS { get; set; }
+
+        // Raw measurement (projected from PrismTimeBlockObservationCount)
         public int ObservationCount { get; set; }
-        public int MaxObservationCount { get; set; }
-        public double PercentageSuccess { get; set; }
-        public string? TimeBlockStart { get; set; }
-        public string? TimeBlockEnd { get; set; }
+
+        // Derived reporting metrics
+        public bool IsRead { get; set; }                 // true if ObservationCount >= 1
+        //public int MaxObservationCount { get; set; }     // max across prisms in this block
+        //public double PercentageSuccess { get; set; }    // ObservationCount / MaxObservationCount
+
+        // Time context (reporting only)
+        public string? TimeBlockStartUTC { get; set; }
+        public string? TimeBlockEndUTC { get; set; }
+        public string? TimeBlockStartLocal { get; set; }
+        public string? TimeBlockEndLocal { get; set; }
+
+        // Spreadsheet layout (rendering only)
         public int Col { get; set; }
         public int Row { get; set; }
-
     }
+
 
     public class ColumnData
     {
@@ -424,7 +453,7 @@ namespace gnaDataClasses
         public string? SensorID { get; set; }
         public string? Name { get; set; }
         public string? ReplacementName { get; set; }
-        public string? ATS { get; set; } 
+        public string? ATS { get; set; }
         public int ObservationCount { get; set; }
         public int MaxObservationCount { get; set; }
         public double PercentageSuccess { get; set; }
@@ -469,9 +498,6 @@ namespace gnaDataClasses
     }
 
 
-
-
-    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
     public class PrismCoords
@@ -552,13 +578,13 @@ namespace gnaDataClasses
         public string? TimeLocalref { get; set; }
         public double Nref { get; set; }
         public double Eref { get; set; }
-        public double Href { get; set; }    
+        public double Href { get; set; }
         public double TORref { get; set; }
         public string? TimeLocalprevious { get; set; }
         public double Nprevious { get; set; }
         public double Eprevious { get; set; }
 
-        public double Hprevious { get; set; }   
+        public double Hprevious { get; set; }
         public double TORprevious { get; set; }
 
         public string? TimeLocalcurrent { get; set; }
@@ -657,6 +683,50 @@ namespace gnaDataClasses
         public int ObservationCount { get; init; }
     }
 
+
+
+    public sealed class PrismTimeBlockObservationCount
+    {
+        /// <summary>
+        /// Primary key linking back to PrismIdentity.SensorId and DB SensorID.
+        /// </summary>
+        public string SensorId { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Optional denormalised metadata for debugging/report labelling.
+        /// </summary>
+        public string PrismName { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Optional denormalised metadata for debugging/report labelling.
+        /// </summary>
+        public string? ReplacementName { get; init; }
+
+        /// <summary>
+        /// Optional denormalised metadata for grouping.
+        /// </summary>
+        public string AtsName { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Time block index in the provided subBlocks list (0-based).
+        /// </summary>
+        public int TimeBlockIndex { get; init; }
+
+        /// <summary>
+        /// UTC start time for the block (inclusive).
+        /// </summary>
+        public DateTime BlockStartUtc { get; init; }
+
+        /// <summary>
+        /// UTC end time for the block (inclusive, matching legacy BETWEEN semantics).
+        /// </summary>
+        public DateTime BlockEndUtc { get; init; }
+
+        /// <summary>
+        /// Count of non-outlier observations in dbo.TMTPosition_Terrestrial for the prism in this block.
+        /// </summary>
+        public int ObservationCount { get; init; }
+    }
 
 
 
