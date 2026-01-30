@@ -115,6 +115,12 @@ namespace gnaDataClasses
         public string? EmailPassword { get; set; }
         public string? EmailFrom { get; set; }
         public string? EmailRecipients { get; set; }
+
+
+
+
+
+
     }
 
 
