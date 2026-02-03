@@ -374,7 +374,6 @@ namespace gnaDataClasses
         public double Nref { get; set; }
         public double Eref { get; set; }
         public double Href { get; set; }
-
         public double dN { get; set; }
         public double dE { get; set; }
         public double dH { get; set; }
@@ -403,8 +402,6 @@ namespace gnaDataClasses
         public string? dH_Trigger_color { get; set; }
         public string? dR_Trigger_color { get; set; }
         public string? dT_Trigger_color { get; set; }
-
-
     }
 
     public class Deltas
