@@ -72,35 +72,35 @@ namespace gnaDataClasses
         public string? isOutlier { get; set; }
 
         // Reference coordinates
-        public double Nref { get; set; }
-        public double Eref { get; set; }
-        public double Href { get; set; }
+        public double? Nref { get; set; }
+        public double? Eref { get; set; }
+        public double? Href { get; set; }
 
         // Displacements
-        public double dN { get; set; }
-        public double dE { get; set; }
-        public double dH { get; set; }
+        public double? dN { get; set; }
+        public double? dE { get; set; }
+        public double? dH { get; set; }
 
         // Corrections
-        public double dNcor { get; set; }
-        public double dEcor { get; set; }
-        public double dHcor { get; set; }
+        public double? dNcor { get; set; }
+        public double? dEcor { get; set; }
+        public double? dHcor { get; set; }
 
         // Absolute coordinates
-        public double N { get; set; }
-        public double E { get; set; }
-        public double H { get; set; }
+        public double? N { get; set; }
+        public double? E { get; set; }
+        public double? H { get; set; }
 
         // Mean coordinates
-        public double MeanN { get; set; }
-        public double MeanE { get; set; }
-        public double MeanH { get; set; }
+        public double? MeanN { get; set; }
+        public double? MeanE { get; set; }
+        public double? MeanH { get; set; }
 
 
         // Derived metrics
-        public double dS { get; set; }
-        public double dR { get; set; }
-        public double dT { get; set; }
+        public double? dS { get; set; }
+        public double? dR { get; set; }
+        public double? dT { get; set; }
 
         // Time metrics
         public string? TimeBlockStartUTC { get; set; }
@@ -257,15 +257,6 @@ namespace gnaDataClasses
         public string ATS { get; init; } = string.Empty;
         public int PrismCount { get; init; }
     }
-
-
-
-
-
-
-
-
-
 
 
     public class PrismStats
