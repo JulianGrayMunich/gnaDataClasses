@@ -11,6 +11,52 @@ namespace gnaDataClasses
 #pragma warning disable IDE1006
 #pragma warning disable NU1510
 
+    #region Environment classes
+
+
+
+        public sealed class RuntimeEnvironment
+        {
+            // ---- Database ----
+            public string? DbConnectionString { get; init; }
+            public string? ProjectTitle { get; init; }
+
+            // ---- Workbook ----
+            public string? ExcelPath { get; init; }
+            public string? ExcelFile { get; init; }
+
+            // Only valid when both parts are present; otherwise null.
+            public string? MasterWorkbookFullPath =>
+                (ExcelPath is null || ExcelFile is null) ? null : ExcelPath + ExcelFile;
+
+            // ---- Worksheets ----
+            public string? SurveyWorksheet { get; init; }
+            public string? ReferenceWorksheet { get; init; }
+            public string? HistoricCoordinatesWorksheet { get; init; }
+            public string? HistoricDeltasWorksheet { get; init; }
+            public string? HistoricDRWorksheet { get; init; }
+            public string? HistoricDTWorksheet { get; init; }
+            public string? HistoricDHWorksheet { get; init; }
+
+            // ---- Row/Col configuration ----
+            public int? FirstDataRow { get; init; }
+            public int? FirstDataCol { get; init; }
+            public int? FirstOutputRow { get; init; }
+        }
+
+
+
+
+
+    #endregion
+
+
+
+
+
+
+
+
     public class BuildInfo
     {
         /// <summary>
@@ -57,6 +103,30 @@ namespace gnaDataClasses
         }
     }
 
+    public class Coordinate2D
+    {
+        public double E { get; }
+        public double N { get; }
+
+        public Coordinate2D(double e, double n)
+        {
+            E = e;
+            N = n;
+        }
+    }
+
+    public class ReferenceLine2D
+    {
+        public Coordinate2D A { get; }
+        public Coordinate2D B { get; }
+
+        public ReferenceLine2D(Coordinate2D a, Coordinate2D b)
+        {
+            A = a ?? throw new ArgumentNullException(nameof(a));
+            B = b ?? throw new ArgumentNullException(nameof(b));
+        }
+    }
+
 
 
 
@@ -77,14 +147,14 @@ namespace gnaDataClasses
         public double? Href { get; set; }
 
         // Displacements
-        public double? dN { get; set; }
-        public double? dE { get; set; }
-        public double? dH { get; set; }
+        public double dN { get; set; }
+        public double dE { get; set; }
+        public double dH { get; set; }
 
         // Corrections
-        public double? dNcor { get; set; }
-        public double? dEcor { get; set; }
-        public double? dHcor { get; set; }
+        public double dNcor { get; set; }
+        public double dEcor { get; set; }
+        public double dHcor { get; set; }
 
         // Absolute coordinates
         public double? N { get; set; }
@@ -98,9 +168,10 @@ namespace gnaDataClasses
 
 
         // Derived metrics
-        public double? dS { get; set; }
-        public double? dR { get; set; }
-        public double? dT { get; set; }
+        public double dS { get; set; }
+        public double dR { get; set; }
+        public double dT { get; set; }
+        public double dHtotal { get; set; }
 
         // Time metrics
         public string? TimeBlockStartUTC { get; set; }
