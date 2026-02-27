@@ -37,9 +37,11 @@ namespace gnaDataClasses
             public string? HistoricDRWorksheet { get; init; }
             public string? HistoricDTWorksheet { get; init; }
             public string? HistoricDHWorksheet { get; init; }
+            public string? LatestCoordinatesWorksheet { get; init; }
+            public string? LatestPolarDisplacementsWorksheet { get; init; }
 
-            // ---- Row/Col configuration ----
-            public int? FirstDataRow { get; init; }
+        // ---- Row/Col configuration ----
+        public int? FirstDataRow { get; init; }
             public int? FirstDataCol { get; init; }
             public int? FirstOutputRow { get; init; }
         }
