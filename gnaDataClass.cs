@@ -13,8 +13,6 @@ namespace gnaDataClasses
 
     #region Environment classes
 
-
-
         public sealed class RuntimeEnvironment
         {
             // ---- Database ----
@@ -37,7 +35,10 @@ namespace gnaDataClasses
             public string? HistoricDRWorksheet { get; init; }
             public string? HistoricDTWorksheet { get; init; }
             public string? HistoricDHWorksheet { get; init; }
-            public string? LatestCoordinatesWorksheet { get; init; }
+            public string? HistoricDistanceWorksheet { get; init; }
+            public string? CalibrationWorksheet { get; init; }
+
+        public string? LatestCoordinatesWorksheet { get; init; }
             public string? LatestPolarDisplacementsWorksheet { get; init; }
 
         // ---- Row/Col configuration ----
@@ -46,91 +47,75 @@ namespace gnaDataClasses
             public int? FirstOutputRow { get; init; }
         }
 
+    #endregion
 
+    #region ATS classes
+
+
+
+
+
+    public class ATSstats
+    {
+        public string? ATSname { get; set; }       // this is a string as it could contain 'Missing'
+        public int MaxPossibleObs { get; set; }
+        public int SuccessfulObs { get; set; }
+        public int TotalPrismCount { get; set; }
+        public int SuccessfulPrismCount { get; set; }
+        public int FailedPrismCount { get; set; }
+        public double PercentageSuccess { get; set; }
+        public string? TimeBlockStart { get; set; }
+        public string? TimeBlockEnd { get; set; }
+        public string? Date { get; set; }
+
+    }
+
+
+    public sealed class ATSIdentity
+    {
+        public string ATS { get; init; } = string.Empty;
+        public int PrismCount { get; init; }
+    }
+
+
+
+    public class ATSDetails
+    {
+        public string ATSName { get; init; } = string.Empty;
+        public string GKAFilePath { get; init; } = string.Empty;
+        public double E { get; set; }
+        public double N { get; set; }
+        public double H { get; set; }
+    }
+
+    public class ATS
+    {
+        public string? Name { get; set; }
+        public double E { get; set; }
+        public double N { get; set; }
+        public double H { get; set; }
+        public string? Settop { get; set; }
+        public string? ROlist { get; set; }
+        public string? Note1 { get; set; }
+    }
+
+
+    public class ATSCoords
+    {
+        public string? Name { get; set; }
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+        public double OrientationGons { get; set; }
+
+
+    }
 
 
 
     #endregion
 
-
-
-
-
-
-
-
-    public class BuildInfo
-    {
-        /// <summary>
-        /// Returns a build/date stamp derived from the best available executable image timestamp.
-        /// Falls back to UTC now if no valid file path can be resolved.
-        /// </summary>
-        public static string BuildDateString(string format = "yyyyMMdd")
-        {
-            try
-            {
-                // 1) Prefer the entry assembly (the EXE in normal runs)
-                var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-                string? path = asm.Location;
-
-                // 2) If empty or nonexistent, try the current process path (NET 6+)
-                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                    path = Environment.ProcessPath;
-
-                // 3) Try MainModule file name
-                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                    path = Process.GetCurrentProcess().MainModule?.FileName;
-
-                // 4) Last resort: look for an .exe in the base directory
-                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                {
-                    var baseDir = AppContext.BaseDirectory;
-                    path = Directory.EnumerateFiles(baseDir, "*.exe", SearchOption.TopDirectoryOnly)
-                                    .FirstOrDefault();
-                }
-
-                // If all else fails, use current time (won't throw)
-                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                    return DateTime.Now.ToString(format);
-
-                // Use the file's last write time as a proxy for build time
-                var dtLocal = File.GetLastWriteTime(path);
-                return dtLocal.ToString(format);
-            }
-            catch
-            {
-                // Absolute safety net
-                return DateTime.Now.ToString(format);
-            }
-        }
-    }
-
-    public class Coordinate2D
-    {
-        public double E { get; }
-        public double N { get; }
-
-        public Coordinate2D(double e, double n)
-        {
-            E = e;
-            N = n;
-        }
-    }
-
-    public class ReferenceLine2D
-    {
-        public Coordinate2D A { get; }
-        public Coordinate2D B { get; }
-
-        public ReferenceLine2D(Coordinate2D a, Coordinate2D b)
-        {
-            A = a ?? throw new ArgumentNullException(nameof(a));
-            B = b ?? throw new ArgumentNullException(nameof(b));
-        }
-    }
-
-
-
+    #region Prisms
 
     public class Points
     {
@@ -180,257 +165,6 @@ namespace gnaDataClasses
         public string? TimeBlockEndUTC { get; set; }
     }
 
-    //============================================================
-
-    public class EmailCredentials
-    {
-        public string? EmailLogin { get; set; }
-        public string? EmailPassword { get; set; }
-        public string? EmailFrom { get; set; }
-        public string? EmailRecipients { get; set; }
-
-
-
-
-
-
-    }
-
-
-
-    public class SensorInfo
-    {
-        public int SensorID { get; set; }
-        public string? SensorName { get; set; }
-        public string? ATS { get; set; }
-        public string? Read { get; set; }
-        public int Yes { get; set; }
-        public int No { get; set; }
-
-    }
-
-
-    public class AlarmState
-    {
-        public string? ATSname { get; set; }
-        public string? Settop { get; set; }
-        public string? previousAlarmState { get; set; }
-        public string? currentAlarmState { get; set; }
-        public int Yes { get; set; }
-        public int No { get; set; }
-        public string? StateChange { get; set; }
-    }
-
-
-    public class GKAmeanLimits
-    {
-        public double HA { get; set; }
-        public double VA { get; set; }
-        public double SD { get; set; }
-
-    }
-
-
-
-
-
-
-
-    public class SPN010
-    {
-        public double ShortTwistAmber { get; set; }
-        public double ShortTwistRed { get; set; }
-        public double LongTwistAmber { get; set; }
-        public double LongTwistRed { get; set; }
-        public double TopAmber { get; set; }
-        public double TopRed { get; set; }
-
-    }
-
-
-    public class GKAdata
-    {
-        public string? ATSname { get; set; } //1
-        public string? TargetName { get; set; } //1
-        public string? UTCtime { get; set; }
-        public Int16 Face { get; set; } //6
-        public double Ha { get; set; } //10
-        public double Va { get; set; } //12
-        public double SD { get; set; } //7
-        public double PsmOffset { get; set; } //15
-        public Int16 ObservationCount { get; set; }
-
-    }
-
-    // public class FieldObservation
-    //    {
-    //        public string? TargetName { get; set; } //1
-    //        public string? UTCtime { get; set; }
-    //        public Int16 Face { get; set; } //6
-    //        public double Ha { get; set; } //10
-    //        public double Va { get; set; } //12
-    //        public double SD { get; set; } //7
-    //        public double PsmOffst { get; set; } //15
-
-    //        public Int16 Rounds{ get; set; }
-    //}
-
-
-    public class Observation
-    {
-        public int? index { get; set; }
-        public int? fixedDataIndex { get; set; }
-        public string? Name { get; set; }       // this is a string as it could contain 'Missing'
-        public string? UTCtime { get; set; }
-        public double dE { get; set; }
-        public double dN { get; set; }
-        public double dH { get; set; }
-        public double E { get; set; }
-        public double N { get; set; }
-        public double H { get; set; }
-        public double dT { get; set; }
-        public double PsmOffst { get; set; }
-        public string? railBracket { get; set; }
-    }
-
-    public class ATSstats
-    {
-        public string? ATSname { get; set; }       // this is a string as it could contain 'Missing'
-        public int MaxPossibleObs { get; set; }
-        public int SuccessfulObs { get; set; }
-        public int TotalPrismCount { get; set; }
-        public int SuccessfulPrismCount { get; set; }
-        public int FailedPrismCount { get; set; }
-        public double PercentageSuccess { get; set; }
-        public string? TimeBlockStart { get; set; }
-        public string? TimeBlockEnd { get; set; }
-        public string? Date { get; set; }
-
-    }
-
-    public class FixedData
-    {
-        public int? index { get; set; }
-        public string? shortName { get; set; }
-        public string? longName { get; set; }
-        public double? Esurvey { get; set; }
-        public double? Nsurvey { get; set; }
-        public double? Hsurvey { get; set; }
-        public string? railBracket { get; set; }
-        public double? dTtrigger { get; set; }
-        public double? dHtrigger { get; set; }
-
-        public double? Chainage { get; set; }
-
-    }
-
-
-    public sealed class ATSIdentity
-    {
-        public string ATS { get; init; } = string.Empty;
-        public int PrismCount { get; init; }
-    }
-
-
-    public class PrismStats
-    {
-        // Identity (copied from PrismIdentity for reporting convenience)
-        public string? SensorID { get; set; }
-        public string? Name { get; set; }
-        public string? ReplacementName { get; set; }
-        public string? ATS { get; set; }
-
-        // Raw measurement (projected from PrismTimeBlockObservationCount)
-        public int ObservationCount { get; set; }
-
-        // Derived reporting metrics
-        public bool IsRead { get; set; }                 // true if ObservationCount >= 1
-        //public int MaxObservationCount { get; set; }     // max across prisms in this block
-        //public double PercentageSuccess { get; set; }    // ObservationCount / MaxObservationCount
-
-        // Time context (reporting only)
-        public string? TimeBlockStartUTC { get; set; }
-        public string? TimeBlockEndUTC { get; set; }
-        public string? TimeBlockStartLocal { get; set; }
-        public string? TimeBlockEndLocal { get; set; }
-
-        // Spreadsheet layout (rendering only)
-        public int Col { get; set; }
-        public int Row { get; set; }
-    }
-
-
-    public class ColumnData
-    {
-        public string? Name { get; set; }
-
-        public string? data { get; set; }
-    }
-
-    public class Coordinates
-    {
-        public string? SensorID { get; set; }       // this is a string as it could contain 'Missing'
-        public string? Name { get; set; }
-        public double Nref { get; set; }
-        public double Eref { get; set; }
-        public double Href { get; set; }
-        public double dN { get; set; }
-        public double dE { get; set; }
-        public double dH { get; set; }
-        public double dNcorr { get; set; }
-        public double dEcorr { get; set; }
-        public double dHcorr { get; set; }
-        public double Ncurrent { get; set; }
-        public double Ecurrent { get; set; }
-        public double Hcurrent { get; set; }
-        public double ToRoffset { get; set; }
-        public double ToR { get; set; }
-        public string? Timestamp { get; set; }
-        public string? Count { get; set; }
-        public string? Type { get; set; }
-        public string? ReplacementName { get; set; }
-        public string? ATS { get; set; }
-        public string? RailBracket { get; set; }
-        public double Hfault { get; set; }
-        public double Vfault { get; set; }
-
-    }
-
-
-
-    public class ATSDetails
-    {
-        public string ATSName { get; init; } = string.Empty;
-        public string GKAFilePath { get; init; } = string.Empty;
-        public double E { get; set; }
-        public double N { get; set; }
-        public double H { get; set; }
-    }
-
-    public class ATS
-    {
-        public string? Name { get; set; }
-        public double E { get; set; }
-        public double N { get; set; }
-        public double H { get; set; }
-        public string? Settop { get; set; }
-        public string? ROlist { get; set; }
-        public string? Note1 { get; set; }
-    }
-
-
-    public class ATSCoords
-    {
-        public string? Name { get; set; }
-        public double N { get; set; }
-        public double E { get; set; }
-        public double H { get; set; }
-        public double OrientationGons { get; set; }
-
-
-    }
-
-
     public class Prism
     {
         public string? SensorID { get; set; }       // this is a string as it could contain 'Missing'
@@ -468,6 +202,216 @@ namespace gnaDataClasses
         public string? dT_Trigger_color { get; set; }
     }
 
+    public class ControlPrisms
+    {
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+        public double slopeDist { get; set; }
+        public double prismConst { get; set; }
+    }
+
+    #endregion
+
+    #region Timeblocks and stats
+
+    public sealed class PrismTimeBlockCount
+    {
+        public string SensorId { get; init; } = string.Empty;
+        public DateTime BlockStartUtc { get; init; }
+        public DateTime BlockEndUtc { get; init; }
+        public int ObservationCount { get; init; }
+    }
+
+    public sealed class PrismTimeBlockObservationCount
+    {
+        /// <summary>
+        /// Primary key linking back to PrismIdentity.SensorId and DB SensorID.
+        /// </summary>
+        public string SensorId { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Optional denormalised metadata for debugging/report labelling.
+        /// </summary>
+        public string PrismName { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Optional denormalised metadata for debugging/report labelling.
+        /// </summary>
+        public string? ReplacementName { get; init; }
+
+        /// <summary>
+        /// Optional denormalised metadata for grouping.
+        /// </summary>
+        public string AtsName { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Time block index in the provided subBlocks list (0-based).
+        /// </summary>
+        public int TimeBlockIndex { get; init; }
+
+        /// <summary>
+        /// UTC start time for the block (inclusive).
+        /// </summary>
+        public DateTime BlockStartUtc { get; init; }
+
+        /// <summary>
+        /// UTC end time for the block (inclusive, matching legacy BETWEEN semantics).
+        /// </summary>
+        public DateTime BlockEndUtc { get; init; }
+
+        /// <summary>
+        /// Count of non-outlier observations in dbo.TMTPosition_Terrestrial for the prism in this block.
+        /// </summary>
+        public int ObservationCount { get; init; }
+    }
+
+    public class PrismStatsTable
+    {
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
+        public string? ATS { get; set; }
+        public int ObservationCount { get; set; }
+        public int MaxObservationCount { get; set; }
+        public double PercentageSuccess { get; set; }
+        public string? TimeBlockStart { get; set; }
+        public string? TimeBlockEnd { get; set; }
+        public string? TimeBlockColumnHeader { get; set; }
+        public int Col { get; set; }
+        public int Row { get; set; }
+        public int Index { get; set; }
+
+    }
+
+    public class PrismStats
+    {
+        // Identity (copied from PrismIdentity for reporting convenience)
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
+        public string? ATS { get; set; }
+
+        // Raw measurement (projected from PrismTimeBlockObservationCount)
+        public int ObservationCount { get; set; }
+
+        // Derived reporting metrics
+        public bool IsRead { get; set; }                 // true if ObservationCount >= 1
+        //public int MaxObservationCount { get; set; }     // max across prisms in this block
+        //public double PercentageSuccess { get; set; }    // ObservationCount / MaxObservationCount
+
+        // Time context (reporting only)
+        public string? TimeBlockStartUTC { get; set; }
+        public string? TimeBlockEndUTC { get; set; }
+        public string? TimeBlockStartLocal { get; set; }
+        public string? TimeBlockEndLocal { get; set; }
+
+        // Spreadsheet layout (rendering only)
+        public int Col { get; set; }
+        public int Row { get; set; }
+    }
+
+
+    #endregion
+
+    #region Coordinates
+
+    public class Coordinates
+    {
+        public string? SensorID { get; set; }       // this is a string as it could contain 'Missing'
+        public string? Name { get; set; }
+        public double Nref { get; set; }
+        public double Eref { get; set; }
+        public double Href { get; set; }
+        public double dN { get; set; }
+        public double dE { get; set; }
+        public double dH { get; set; }
+        public double dNcorr { get; set; }
+        public double dEcorr { get; set; }
+        public double dHcorr { get; set; }
+        public double Ncurrent { get; set; }
+        public double Ecurrent { get; set; }
+        public double Hcurrent { get; set; }
+        public double ToRoffset { get; set; }
+        public double ToR { get; set; }
+        public string? Timestamp { get; set; }
+        public string? Count { get; set; }
+        public string? Type { get; set; }
+        public string? ReplacementName { get; set; }
+        public string? ATS { get; set; }
+        public string? RailBracket { get; set; }
+        public double Hfault { get; set; }
+        public double Vfault { get; set; }
+
+    }
+
+    public class PrismCoords
+    {
+        public string? SensorID { get; set; }
+        public string? ATSname { get; set; }
+        public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
+        public double N { get; set; }
+        public double E { get; set; }
+        public double H { get; set; }
+
+        public double settopHa { get; set; }
+        public double settopVa { get; set; }
+        public double settopSD { get; set; }
+
+        public double joinHa { get; set; }
+        public double joinVa { get; set; }
+        public double joinSD { get; set; }
+
+        public double dR { get; set; }
+        public double dT { get; set; }
+
+        public double prismConst { get; set; }
+
+        public int readingCount { get; set; }
+
+    }
+
+    public class TransCoords
+    {
+        public string? Name { get; set; }
+        public double Nlocal { get; set; }
+        public double Elocal { get; set; }
+        public double Hlocal { get; set; }
+        public double Nmain { get; set; }
+        public double Emain { get; set; }
+        public double Hmain { get; set; }
+        public double dS { get; set; }
+        public double dH { get; set; }
+        public double OrrCorr { get; set; }
+
+        public double ObservedHA { get; set; }
+
+        public double ObservedVA { get; set; }
+
+        public double ObservedSD { get; set; }
+    }
+
+
+    public class Coordinate2D
+    {
+        public double E { get; }
+        public double N { get; }
+
+        public Coordinate2D(double e, double n)
+        {
+            E = e;
+            N = n;
+        }
+    }
+
+
+
+    #endregion
+
+    #region Deltas
     public class Deltas
     {
         public string? Name { get; set; }
@@ -478,6 +422,27 @@ namespace gnaDataClasses
         public string? Count { get; set; }
         public string? Track { get; set; }
     }
+
+
+    #endregion
+
+    #region Rail Geometry classes
+
+
+    public class SPN010
+    {
+        public double ShortTwistAmber { get; set; }
+        public double ShortTwistRed { get; set; }
+        public double LongTwistAmber { get; set; }
+        public double LongTwistRed { get; set; }
+        public double TopAmber { get; set; }
+        public double TopRed { get; set; }
+
+    }
+
+
+
+
 
     public class TrackGeometry
     {
@@ -507,101 +472,6 @@ namespace gnaDataClasses
         public int Trigger_V_A { get; set; }
         public int Trigger_V_B { get; set; }
 
-    }
-
-    public class Car
-    {
-        public string? Model { get; set; }
-        public string? Color { get; set; }
-    }
-
-    public class PrismStatsTable
-    {
-        public string? SensorID { get; set; }
-        public string? Name { get; set; }
-        public string? ReplacementName { get; set; }
-        public string? ATS { get; set; }
-        public int ObservationCount { get; set; }
-        public int MaxObservationCount { get; set; }
-        public double PercentageSuccess { get; set; }
-        public string? TimeBlockStart { get; set; }
-        public string? TimeBlockEnd { get; set; }
-        public string? TimeBlockColumnHeader { get; set; }
-        public int Col { get; set; }
-        public int Row { get; set; }
-        public int Index { get; set; }
-
-    }
-
-    public class TransCoords
-    {
-        public string? Name { get; set; }
-        public double Nlocal { get; set; }
-        public double Elocal { get; set; }
-        public double Hlocal { get; set; }
-        public double Nmain { get; set; }
-        public double Emain { get; set; }
-        public double Hmain { get; set; }
-        public double dS { get; set; }
-        public double dH { get; set; }
-        public double OrrCorr { get; set; }
-
-        public double ObservedHA { get; set; }
-
-        public double ObservedVA { get; set; }
-
-        public double ObservedSD { get; set; }
-    }
-
-    public class ControlPrisms
-    {
-        public string? SensorID { get; set; }
-        public string? Name { get; set; }
-        public double N { get; set; }
-        public double E { get; set; }
-        public double H { get; set; }
-        public double slopeDist { get; set; }
-        public double prismConst { get; set; }
-    }
-
-
-
-
-    public class PrismCoords
-    {
-        public string? SensorID { get; set; }
-        public string? ATSname { get; set; }
-        public string? Name { get; set; }
-        public string? ReplacementName { get; set; }
-        public double N { get; set; }
-        public double E { get; set; }
-        public double H { get; set; }
-
-        public double settopHa { get; set; }
-        public double settopVa { get; set; }
-        public double settopSD { get; set; }
-
-        public double joinHa { get; set; }
-        public double joinVa { get; set; }
-        public double joinSD { get; set; }
-
-        public double dR { get; set; }
-        public double dT { get; set; }
-
-        public double prismConst { get; set; }
-
-        public int readingCount { get; set; }
-
-    }
-
-    public class OrientationObservations
-    {
-        public bool IsUsed { get; set; }
-        public string? Name { get; set; }
-        public double HA { get; set; }
-        public double VA { get; set; }
-        public double SD { get; set; }
-        public double prismConst { get; set; }
     }
 
     public class RailTags
@@ -634,7 +504,110 @@ namespace gnaDataClasses
 
 
 
+    #endregion
 
+    #region Observations
+
+    public class OrientationObservations
+    {
+        public bool IsUsed { get; set; }
+        public string? Name { get; set; }
+        public double HA { get; set; }
+        public double VA { get; set; }
+        public double SD { get; set; }
+        public double prismConst { get; set; }
+    }
+
+    public class GKAdata
+    {
+        public string? ATSname { get; set; } //1
+        public string? TargetName { get; set; } //1
+        public string? UTCtime { get; set; }
+        public Int16 Face { get; set; } //6
+        public double Ha { get; set; } //10
+        public double Va { get; set; } //12
+        public double SD { get; set; } //7
+        public double PsmOffset { get; set; } //15
+        public Int16 ObservationCount { get; set; }
+
+    }
+
+    public class Observation
+    {
+        public int? index { get; set; }
+        public int? fixedDataIndex { get; set; }
+        public string? Name { get; set; }       // this is a string as it could contain 'Missing'
+        public string? UTCtime { get; set; }
+        public double dE { get; set; }
+        public double dN { get; set; }
+        public double dH { get; set; }
+        public double E { get; set; }
+        public double N { get; set; }
+        public double H { get; set; }
+        public double dT { get; set; }
+        public double PsmOffst { get; set; }
+        public string? railBracket { get; set; }
+    }
+
+    public class GKAmeanLimits
+    {
+        public double HA { get; set; }
+        public double VA { get; set; }
+        public double SD { get; set; }
+
+    }
+
+
+
+
+    #endregion
+
+
+    #region Calibration data classes
+
+    public sealed class CalibrationData
+    {
+        // Metadata
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+
+        // Slope Distances
+        public double? ReferenceDist { get; set; }
+        public double? CurrentDist { get; set; }
+        public double? PreviousDist { get; set; }
+
+
+        // Time metrics
+        public string? CurrentTimeUTC { get; set; }
+    }
+
+    #endregion
+
+
+
+
+
+    #region Email classes
+
+    public class EmailCredentials
+    {
+        public string? EmailLogin { get; set; }
+        public string? EmailPassword { get; set; }
+        public string? EmailFrom { get; set; }
+        public string? EmailRecipients { get; set; }
+
+
+
+
+
+
+    }
+
+
+
+    #endregion
+
+    #region JWG classes
     public class JWG_Prisms
     {
         public string? Count { get; set; }
@@ -728,9 +701,122 @@ namespace gnaDataClasses
 
     }
 
+    #endregion
 
 
-    // for project performance software
+    #region Helper / Limited use classes
+
+    public class SensorInfo
+    {
+        public int SensorID { get; set; }
+        public string? SensorName { get; set; }
+        public string? ATS { get; set; }
+        public string? Read { get; set; }
+        public int Yes { get; set; }
+        public int No { get; set; }
+
+    }
+
+
+    public class AlarmState
+    {
+        public string? ATSname { get; set; }
+        public string? Settop { get; set; }
+        public string? previousAlarmState { get; set; }
+        public string? currentAlarmState { get; set; }
+        public int Yes { get; set; }
+        public int No { get; set; }
+        public string? StateChange { get; set; }
+    }
+
+    public class BuildInfo
+    {
+        /// <summary>
+        /// Returns a build/date stamp derived from the best available executable image timestamp.
+        /// Falls back to UTC now if no valid file path can be resolved.
+        /// </summary>
+        public static string BuildDateString(string format = "yyyyMMdd")
+        {
+            try
+            {
+                // 1) Prefer the entry assembly (the EXE in normal runs)
+                var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+                string? path = asm.Location;
+
+                // 2) If empty or nonexistent, try the current process path (NET 6+)
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                    path = Environment.ProcessPath;
+
+                // 3) Try MainModule file name
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                    path = Process.GetCurrentProcess().MainModule?.FileName;
+
+                // 4) Last resort: look for an .exe in the base directory
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                {
+                    var baseDir = AppContext.BaseDirectory;
+                    path = Directory.EnumerateFiles(baseDir, "*.exe", SearchOption.TopDirectoryOnly)
+                                    .FirstOrDefault();
+                }
+
+                // If all else fails, use current time (won't throw)
+                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+                    return DateTime.Now.ToString(format);
+
+                // Use the file's last write time as a proxy for build time
+                var dtLocal = File.GetLastWriteTime(path);
+                return dtLocal.ToString(format);
+            }
+            catch
+            {
+                // Absolute safety net
+                return DateTime.Now.ToString(format);
+            }
+        }
+    }
+
+    public class Join3DResult
+    {
+        public double Ha { get; init; }
+        public double Va { get; init; }
+        public double SD { get; init; }
+    }
+
+    public class ReferenceLine2D
+    {
+        public Coordinate2D A { get; }
+        public Coordinate2D B { get; }
+
+        public ReferenceLine2D(Coordinate2D a, Coordinate2D b)
+        {
+            A = a ?? throw new ArgumentNullException(nameof(a));
+            B = b ?? throw new ArgumentNullException(nameof(b));
+        }
+    }
+
+    public class ColumnData
+    {
+        public string? Name { get; set; }
+
+        public string? data { get; set; }
+    }
+
+    public class FixedData
+    {
+        public int? index { get; set; }
+        public string? shortName { get; set; }
+        public string? longName { get; set; }
+        public double? Esurvey { get; set; }
+        public double? Nsurvey { get; set; }
+        public double? Hsurvey { get; set; }
+        public string? railBracket { get; set; }
+        public double? dTtrigger { get; set; }
+        public double? dHtrigger { get; set; }
+
+        public double? Chainage { get; set; }
+
+    }
+
     public sealed class PrismIdentity
     {
         public string SensorId { get; init; } = string.Empty;
@@ -742,74 +828,10 @@ namespace gnaDataClasses
         public int SurveyRow { get; init; }
     }
 
-    public sealed class PrismTimeBlockCount
-    {
-        public string SensorId { get; init; } = string.Empty;
-        public DateTime BlockStartUtc { get; init; }
-        public DateTime BlockEndUtc { get; init; }
-        public int ObservationCount { get; init; }
-    }
 
 
 
-    public sealed class PrismTimeBlockObservationCount
-    {
-        /// <summary>
-        /// Primary key linking back to PrismIdentity.SensorId and DB SensorID.
-        /// </summary>
-        public string SensorId { get; init; } = string.Empty;
-
-        /// <summary>
-        /// Optional denormalised metadata for debugging/report labelling.
-        /// </summary>
-        public string PrismName { get; init; } = string.Empty;
-
-        /// <summary>
-        /// Optional denormalised metadata for debugging/report labelling.
-        /// </summary>
-        public string? ReplacementName { get; init; }
-
-        /// <summary>
-        /// Optional denormalised metadata for grouping.
-        /// </summary>
-        public string AtsName { get; init; } = string.Empty;
-
-        /// <summary>
-        /// Time block index in the provided subBlocks list (0-based).
-        /// </summary>
-        public int TimeBlockIndex { get; init; }
-
-        /// <summary>
-        /// UTC start time for the block (inclusive).
-        /// </summary>
-        public DateTime BlockStartUtc { get; init; }
-
-        /// <summary>
-        /// UTC end time for the block (inclusive, matching legacy BETWEEN semantics).
-        /// </summary>
-        public DateTime BlockEndUtc { get; init; }
-
-        /// <summary>
-        /// Count of non-outlier observations in dbo.TMTPosition_Terrestrial for the prism in this block.
-        /// </summary>
-        public int ObservationCount { get; init; }
-    }
-
-
-
-
-
-
-
-    //==================[Specific limited use classes]===================================
-
-    public class Join3DResult
-    {
-        public double Ha { get; init; }
-        public double Va { get; init; }
-        public double SD { get; init; }
-    }
-
+    #endregion
 
 
 }
