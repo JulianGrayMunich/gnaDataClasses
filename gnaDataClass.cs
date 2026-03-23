@@ -14,7 +14,7 @@ namespace gnaDataClasses
     #region Environment classes
 
         public sealed class RuntimeEnvironment
-        {
+    {
             // ---- Database ----
             public string? DbConnectionString { get; init; }
             public string? ProjectTitle { get; init; }
@@ -114,6 +114,126 @@ namespace gnaDataClasses
 
 
     #endregion
+
+    #region Sensors
+    public sealed class Sensor
+    {
+        // ---- Metadata ----
+        public string? SensorID { get; set; }
+        public string? Name { get; set; }
+        public string? ReplacementName { get; set; }
+        public string? SensorType { get; set; }
+        public int? SensorTypeID { get; set; }
+
+        // ---- Reference coordinates ----
+        public double? Nref { get; set; }
+        public double? Eref { get; set; }
+        public double? Href { get; set; }
+
+        // ---- Trigger A ----
+        public double? Trigger_A_Red_min { get; set; }
+        public double? Trigger_A_Amber_min { get; set; }
+        public double? Trigger_A_Green_min { get; set; }
+        public double? Trigger_A_Green_max { get; set; }
+        public double? Trigger_A_Amber_max { get; set; }
+        public double? Trigger_A_Red_max { get; set; }
+
+        // ---- Trigger B ----
+        public double? Trigger_B_Red_min { get; set; }
+        public double? Trigger_B_Amber_min { get; set; }
+        public double? Trigger_B_Green_min { get; set; }
+        public double? Trigger_B_Green_max { get; set; }
+        public double? Trigger_B_Amber_max { get; set; }
+        public double? Trigger_B_Red_max { get; set; }
+
+        // ---- Trigger C ----
+        public double? Trigger_C_Red_min { get; set; }
+        public double? Trigger_C_Amber_min { get; set; }
+        public double? Trigger_C_Green_min { get; set; }
+        public double? Trigger_C_Green_max { get; set; }
+        public double? Trigger_C_Amber_max { get; set; }
+        public double? Trigger_C_Red_max { get; set; }
+
+        // ---- Time metrics ----
+        public string? TimeStampUTC { get; set; }
+    }
+
+    public sealed class TiltObservation
+    {
+        public string? SensorID { get; set; }
+        public double? TiltA { get; set; }
+        public double? TiltB { get; set; }
+        public double? TiltC { get; set; }
+        public string? ObservationTimeUTC { get; set; }
+    }
+
+
+    public sealed class SensorObservation
+    {
+        public string? SensorID { get; set; }
+        public double? ReadingA { get; set; }
+        public double? ReadingB { get; set; }
+        public double? ReadingC { get; set; }
+        public double? ReadingD { get; set; }
+        public double? ReadingE { get; set; }
+        public string? ObservationTimeUTC { get; set; }
+    }
+
+
+
+
+
+
+
+
+
+
+    public sealed class LengthObs
+    {
+        public int SensorId { get; set; }
+        public double? Length { get; set; }
+        public DateTime EndUtc { get; set; }
+    }
+
+
+    public sealed class LengthMeanResult
+    {
+        public bool HasMean { get; set; }
+        public double? Length { get; set; }
+    }
+
+
+
+
+
+
+
+    #endregion
+
+
+    #region CSV Files
+
+    public class CsvSettings
+    {
+        public string IncludeHeader { get; set; } = "Yes";
+        public string IncludeReplacementNames { get; set; } = "Yes";
+        public string IncludeTriggerValues { get; set; } = "Yes";
+        public string OutputFileExtension { get; set; } = "csv";
+        public string CSVseparator { get; set; } = ",";
+        public string CSVformat { get; set; } = "Standard";
+        public string SensorType { get; set; } = string.Empty;
+    }
+
+
+
+
+    #endregion
+
+
+
+
+
+
 
     #region Prisms
 
@@ -729,51 +849,37 @@ namespace gnaDataClasses
         public string? StateChange { get; set; }
     }
 
-    public class BuildInfo
+
+    public static class BuildInfo
     {
-        /// <summary>
-        /// Returns a build/date stamp derived from the best available executable image timestamp.
-        /// Falls back to UTC now if no valid file path can be resolved.
-        /// </summary>
         public static string BuildDateString(string format = "yyyyMMdd")
         {
             try
             {
-                // 1) Prefer the entry assembly (the EXE in normal runs)
-                var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-                string? path = asm.Location;
+                string? path = Environment.ProcessPath;
 
-                // 2) If empty or nonexistent, try the current process path (NET 6+)
                 if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                    path = Environment.ProcessPath;
+                    path = Assembly.GetEntryAssembly()?.Location;
 
-                // 3) Try MainModule file name
                 if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                    path = Process.GetCurrentProcess().MainModule?.FileName;
+                    path = Assembly.GetExecutingAssembly().Location;
 
-                // 4) Last resort: look for an .exe in the base directory
-                if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-                {
-                    var baseDir = AppContext.BaseDirectory;
-                    path = Directory.EnumerateFiles(baseDir, "*.exe", SearchOption.TopDirectoryOnly)
-                                    .FirstOrDefault();
-                }
-
-                // If all else fails, use current time (won't throw)
                 if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
                     return DateTime.Now.ToString(format);
 
-                // Use the file's last write time as a proxy for build time
-                var dtLocal = File.GetLastWriteTime(path);
+                DateTime dtLocal = File.GetLastWriteTime(path);
                 return dtLocal.ToString(format);
             }
             catch
             {
-                // Absolute safety net
                 return DateTime.Now.ToString(format);
             }
         }
     }
+
+
+
+
 
     public class Join3DResult
     {
