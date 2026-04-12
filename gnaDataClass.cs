@@ -9,7 +9,7 @@ namespace gnaDataClasses
 {
 
 #pragma warning disable IDE1006
-#pragma warning disable NU1510
+
 
     #region Environment classes
 
@@ -37,17 +37,55 @@ namespace gnaDataClasses
             public string? HistoricDHWorksheet { get; init; }
             public string? HistoricDistanceWorksheet { get; init; }
             public string? CalibrationWorksheet { get; init; }
+            public string? LatestCoordinatesWorksheet { get; init; }
+            public string? LatestTiltWorksheet { get; init; }
+            public string? HistoricTiltWorksheet { get; init; }
+            public string? HistoricDeltaTiltWorksheet { get; init; }
 
-        public string? LatestCoordinatesWorksheet { get; init; }
-            public string? LatestPolarDisplacementsWorksheet { get; init; }
+            public string? HistoricDeltaTiltAWorksheet { get; init; }
+            public string? HistoricDeltaTiltBWorksheet { get; init; }
+            public string? HistoricDeltaTiltCWorksheet { get; init; }
 
-        // ---- Row/Col configuration ----
-        public int? FirstDataRow { get; init; }
+
+
+
+
+            public string? LatestExtensometerWorksheet { get; init; }
+            public string? HistoricExtensometerWorksheet { get; init; }
+        public string? HistoricDeltaExtensometerWorksheet { get; init; }
+
+
+
+        public string? LatestPolarDisplacementsWorksheet { get; init; }
+
+            // ---- Row/Col configuration ----
+            public int? FirstDataRow { get; init; }
             public int? FirstDataCol { get; init; }
             public int? FirstOutputRow { get; init; }
         }
 
     #endregion
+
+    #region Trigger classes
+
+    public sealed class TriggerValues
+    {
+        // ---- Triggers ----
+        public double? Red_min { get; set; }
+        public double? Amber_min { get; set; }
+        public double? Green_min { get; set; }
+        public double? Green_max { get; set; }
+        public double? Amber_max { get; set; }
+        public double? Red_max { get; set; }
+    }
+
+
+
+    #endregion
+
+
+
+
 
     #region ATS classes
 
@@ -167,6 +205,24 @@ namespace gnaDataClasses
         public string? ObservationTimeUTC { get; set; }
     }
 
+    public sealed class TiltObs
+    {
+        public int SensorId { get; set; }
+        public double? TiltA { get; set; }
+        public double? TiltB { get; set; }
+        public double? TiltC { get; set; }
+        public DateTime EndUtc { get; set; }
+    }
+
+    public sealed class TiltMeanResult
+    {
+        public bool HasMean { get; set; }
+        public int FinalCount { get; set; }
+        public double? TiltA { get; set; }
+        public double? TiltB { get; set; }
+        public double? TiltC { get; set; }
+
+    }
 
     public sealed class SensorObservation
     {
@@ -177,17 +233,46 @@ namespace gnaDataClasses
         public double? ReadingD { get; set; }
         public double? ReadingE { get; set; }
         public string? ObservationTimeUTC { get; set; }
+        public string? ObservationTimeLocal { get; set; }
+        public int Count { get; set; }
     }
 
 
+    public sealed class SensorObservationsCPR
+    {
+        public string? SensorID { get; set; }
+        public string? SensorType { get; set; }
 
+        public double? ReadingA_ref { get; set; }
+        public double? ReadingB_ref { get; set; }
+        public double? ReadingC_ref { get; set; }
 
+        public double? ReadingA_prev { get; set; }
+        public double? ReadingB_prev { get; set; }
+        public double? ReadingC_prev { get; set; }
 
+        public double? ReadingA_cur { get; set; }
+        public double? ReadingB_cur { get; set; }
+        public double? ReadingC_cur { get; set; }
 
+        public string? ObservationTimeLocal_ref { get; set; }
+        public string? ObservationTimeLocal_prev { get; set; }
+        public string? ObservationTimeLocal_cur { get; set; }
+    }
 
-
-
-
+    public sealed class SensorType
+    {
+        public bool Extensometer { get; set; } = false;
+        public bool Inclinometer { get; set; } = false;
+        public bool IPI { get; set; } = false;
+        public bool LaserTilt { get; set; } = false;
+        public bool Piezometer { get; set; } = false;
+        public bool RainGauge { get; set; } = false;
+        public bool SoilMoistureContent { get; set; } = false;
+        public bool Temperature { get; set; } = false;
+        public bool Tiltmeter { get; set; } = false;
+    }
+  
     public sealed class LengthObs
     {
         public int SensorId { get; set; }
@@ -195,11 +280,12 @@ namespace gnaDataClasses
         public DateTime EndUtc { get; set; }
     }
 
-
     public sealed class LengthMeanResult
     {
         public bool HasMean { get; set; }
         public double? Length { get; set; }
+
+        public int FinalCount { get; set; }
     }
 
 
@@ -228,11 +314,6 @@ namespace gnaDataClasses
 
 
     #endregion
-
-
-
-
-
 
 
     #region Prisms
@@ -515,16 +596,10 @@ namespace gnaDataClasses
     }
 
 
-    public class Coordinate2D
+    public class Coordinate2D(double e, double n)
     {
-        public double E { get; }
-        public double N { get; }
-
-        public Coordinate2D(double e, double n)
-        {
-            E = e;
-            N = n;
-        }
+        public double E { get; } = e;
+        public double N { get; } = n;
     }
 
 
@@ -711,19 +786,33 @@ namespace gnaDataClasses
 
     public class EmailCredentials
     {
+        // Authentication
         public string? EmailLogin { get; set; }
         public string? EmailPassword { get; set; }
+
+        // Addressing
         public string? EmailFrom { get; set; }
         public string? EmailRecipients { get; set; }
 
+        // Message content
+        public string? Subject { get; set; }
+        public string? Body { get; set; }
+        public bool IsBodyHtml { get; set; }
 
+        // Transmission control
+        public string? SendEmail { get; set; }
+        public string? EmailTransmissionDays { get; set; }
+        public string? EmailTransmissionTime { get; set; }
+        public double TimeZoneOffset { get; set; }
 
+        // Attachments
+        public List<string>? Attachments { get; set; }
 
+        // Folders
+        public string? SystemLogsFolder { get; set; }
 
 
     }
-
-
 
     #endregion
 
@@ -888,16 +977,10 @@ namespace gnaDataClasses
         public double SD { get; init; }
     }
 
-    public class ReferenceLine2D
+    public class ReferenceLine2D(Coordinate2D a, Coordinate2D b)
     {
-        public Coordinate2D A { get; }
-        public Coordinate2D B { get; }
-
-        public ReferenceLine2D(Coordinate2D a, Coordinate2D b)
-        {
-            A = a ?? throw new ArgumentNullException(nameof(a));
-            B = b ?? throw new ArgumentNullException(nameof(b));
-        }
+        public Coordinate2D A { get; } = a ?? throw new ArgumentNullException(nameof(a));
+        public Coordinate2D B { get; } = b ?? throw new ArgumentNullException(nameof(b));
     }
 
     public class ColumnData
