@@ -30,6 +30,9 @@ namespace gnaDataClasses
             // ---- Worksheets ----
             public string? SurveyWorksheet { get; init; }
             public string? ReferenceWorksheet { get; init; }
+            public string? TrackGeometryWorksheet { get; init; }
+            public string? HistoricTopWorksheet { get; init; }
+            public string? HistoricTwistWorksheet { get; init; }
             public string? HistoricCoordinatesWorksheet { get; init; }
             public string? HistoricDeltasWorksheet { get; init; }
             public string? HistoricDRWorksheet { get; init; }
@@ -46,17 +49,10 @@ namespace gnaDataClasses
             public string? HistoricDeltaTiltBWorksheet { get; init; }
             public string? HistoricDeltaTiltCWorksheet { get; init; }
 
-
-
-
-
             public string? LatestExtensometerWorksheet { get; init; }
             public string? HistoricExtensometerWorksheet { get; init; }
-        public string? HistoricDeltaExtensometerWorksheet { get; init; }
-
-
-
-        public string? LatestPolarDisplacementsWorksheet { get; init; }
+            public string? HistoricDeltaExtensometerWorksheet { get; init; }
+            public string? LatestPolarDisplacementsWorksheet { get; init; }
 
             // ---- Row/Col configuration ----
             public int? FirstDataRow { get; init; }
@@ -262,6 +258,7 @@ namespace gnaDataClasses
 
     public sealed class SensorType
     {
+        public bool Prism { get; set; } = false;
         public bool Extensometer { get; set; } = false;
         public bool Inclinometer { get; set; } = false;
         public bool IPI { get; set; } = false;
@@ -335,14 +332,14 @@ namespace gnaDataClasses
         public double? Href { get; set; }
 
         // Displacements
-        public double dN { get; set; }
-        public double dE { get; set; }
-        public double dH { get; set; }
+        public double? dN { get; set; }
+        public double? dE { get; set; }
+        public double? dH { get; set; }
 
         // Corrections
-        public double dNcor { get; set; }
-        public double dEcor { get; set; }
-        public double dHcor { get; set; }
+        public double? dNcor { get; set; }
+        public double? dEcor { get; set; }
+        public double? dHcor { get; set; }
 
         // Absolute coordinates
         public double? N { get; set; }
@@ -356,10 +353,10 @@ namespace gnaDataClasses
 
 
         // Derived metrics
-        public double dS { get; set; }
-        public double dR { get; set; }
-        public double dT { get; set; }
-        public double dHtotal { get; set; }
+        public double? dS { get; set; }
+        public double? dR { get; set; }
+        public double? dT { get; set; }
+        public double? dHtotal { get; set; }
 
         // Time metrics
         public string? TimeBlockStartUTC { get; set; }
@@ -622,6 +619,28 @@ namespace gnaDataClasses
     #endregion
 
     #region Rail Geometry classes
+
+    public sealed class TrackGeometryPair
+    {
+        // ---- Pair identity ----
+        public int PrismPairNumber { get; set; }
+
+        // ---- Prism identifiers ----
+        public string? LeftSensorID { get; set; }
+        public string? RightSensorID { get; set; }
+
+        // ---- Track geometry results ----
+        public double? Cant { get; set; }
+        public double? Twist { get; set; }
+        public double? LongTwist { get; set; }
+        public double? Top { get; set; }
+        public double? Versine { get; set; }
+    }
+
+
+
+
+
 
 
     public class SPN010
