@@ -18,8 +18,9 @@ namespace gnaDataClasses
             // ---- Database ----
             public string? DbConnectionString { get; init; }
             public string? ProjectTitle { get; init; }
+            public string? ReportType { get; init; }
 
-            // ---- Workbook ----
+        // ---- Workbook ----
             public string? ExcelPath { get; init; }
             public string? ExcelFile { get; init; }
 
@@ -27,12 +28,21 @@ namespace gnaDataClasses
             public string? MasterWorkbookFullPath =>
                 (ExcelPath is null || ExcelFile is null) ? null : ExcelPath + ExcelFile;
 
-            // ---- Worksheets ----
-            public string? SurveyWorksheet { get; init; }
+        // --- permissions
+        public string? RecordHistoricData { get; init; }
+
+        // ---- Worksheets ----
+        public string? SurveyWorksheet { get; init; }
             public string? ReferenceWorksheet { get; init; }
             public string? TrackGeometryWorksheet { get; init; }
             public string? HistoricTopWorksheet { get; init; }
+            public string? HistoricdHWorksheet { get; init; }
+
+            public string? HistoricCantWorksheet { get; init; }
             public string? HistoricTwistWorksheet { get; init; }
+
+            public string? HistoricLongTwistWorksheet { get; init; }
+
             public string? HistoricCoordinatesWorksheet { get; init; }
             public string? HistoricDeltasWorksheet { get; init; }
             public string? HistoricDRWorksheet { get; init; }
@@ -58,7 +68,8 @@ namespace gnaDataClasses
             public int? FirstDataRow { get; init; }
             public int? FirstDataCol { get; init; }
             public int? FirstOutputRow { get; init; }
-        }
+            public int? FirstTrackRow { get; init; }
+    }
 
     #endregion
 
@@ -78,10 +89,6 @@ namespace gnaDataClasses
 
 
     #endregion
-
-
-
-
 
     #region ATS classes
 
@@ -358,6 +365,11 @@ namespace gnaDataClasses
         public double? dT { get; set; }
         public double? dHtotal { get; set; }
 
+        //Rail metrics
+        public double? ToRoffset { get; set; }
+        public double? ToR { get; set; }
+        public string? RailBracket { get; set; }
+
         // Time metrics
         public string? TimeBlockStartUTC { get; set; }
         public string? TimeBlockEndUTC { get; set; }
@@ -620,6 +632,18 @@ namespace gnaDataClasses
 
     #region Rail Geometry classes
 
+    public class TrackElements
+    {
+        public string? SensorID { get; set; }
+        public string? RailBracket { get; set; }
+        public double ToRoffset { get; set; }
+        public double? dNcor { get; set; }
+        public double? dEcor { get; set; }
+        public double? dHcor { get; set; }
+
+
+    }
+
     public sealed class TrackGeometryPair
     {
         // ---- Pair identity ----
@@ -629,20 +653,18 @@ namespace gnaDataClasses
         public string? LeftSensorID { get; set; }
         public string? RightSensorID { get; set; }
 
+        //Rail metrics
+        public string? RailBracket { get; set; }
+
+
         // ---- Track geometry results ----
         public double? Cant { get; set; }
         public double? Twist { get; set; }
         public double? LongTwist { get; set; }
-        public double? Top { get; set; }
+        public double? LeftTop { get; set; }
+        public double? RightTop { get; set; }
         public double? Versine { get; set; }
     }
-
-
-
-
-
-
-
     public class SPN010
     {
         public double ShortTwistAmber { get; set; }
@@ -653,10 +675,6 @@ namespace gnaDataClasses
         public double TopRed { get; set; }
 
     }
-
-
-
-
 
     public class TrackGeometry
     {
