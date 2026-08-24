@@ -15,13 +15,22 @@ namespace gnaDataClasses
 
         public sealed class RuntimeEnvironment
     {
-            // ---- Database ----
+         // ---- Database ----
             public string? DbConnectionString { get; init; }
             public string? ProjectTitle { get; init; }
             public string? ReportType { get; init; }
 
+        // Time Zone Details
+            public string? TimeZoneID { get; set; }
+
+        // --- System folders ---
+        public string? SystemLogsFolder { get; init; } = null;
+        public string? SystemAlarmFolder { get; init; } = null;
+        public string? SystemCredentialsFolder { get; init; } = null;
+
+
         // ---- Workbook ----
-            public string? ExcelPath { get; init; }
+        public string? ExcelPath { get; init; }
             public string? ExcelFile { get; init; }
 
             // Only valid when both parts are present; otherwise null.
@@ -29,10 +38,10 @@ namespace gnaDataClasses
                 (ExcelPath is null || ExcelFile is null) ? null : ExcelPath + ExcelFile;
 
         // --- permissions
-        public string? RecordHistoricData { get; init; }
+            public string? RecordHistoricData { get; init; }
 
         // ---- Worksheets ----
-        public string? SurveyWorksheet { get; init; }
+            public string? SurveyWorksheet { get; init; }
             public string? ReferenceWorksheet { get; init; }
             public string? TrackGeometryWorksheet { get; init; }
             public string? HistoricTopWorksheet { get; init; }
@@ -40,9 +49,7 @@ namespace gnaDataClasses
 
             public string? HistoricCantWorksheet { get; init; }
             public string? HistoricTwistWorksheet { get; init; }
-
             public string? HistoricLongTwistWorksheet { get; init; }
-
             public string? HistoricCoordinatesWorksheet { get; init; }
             public string? HistoricDeltasWorksheet { get; init; }
             public string? HistoricDRWorksheet { get; init; }
@@ -62,13 +69,26 @@ namespace gnaDataClasses
             public string? LatestExtensometerWorksheet { get; init; }
             public string? HistoricExtensometerWorksheet { get; init; }
             public string? HistoricDeltaExtensometerWorksheet { get; init; }
-            public string? LatestPolarDisplacementsWorksheet { get; init; }
+            public string? HistoricCopingWorksheet { get; init; }
+            public string? HistoricSlewWorksheet { get; init; } 
 
-            // ---- Row/Col configuration ----
+            public string? LatestPolarDisplacementsWorksheet { get; init; }
+            public string? SensorTypeWorksheet { get; init; }
+            public string? CopingWorksheet { get; init; }
+
+
+        // ---- Row/Col configuration ----
             public int? FirstDataRow { get; init; }
             public int? FirstDataCol { get; init; }
             public int? FirstOutputRow { get; init; }
             public int? FirstTrackRow { get; init; }
+
+
+
+
+
+
+
     }
 
     #endregion
@@ -664,6 +684,7 @@ namespace gnaDataClasses
         public double? LeftTop { get; set; }
         public double? RightTop { get; set; }
         public double? Versine { get; set; }
+        public double? Slew { get; set; }
     }
     public class SPN010
     {
@@ -680,6 +701,8 @@ namespace gnaDataClasses
     {
         public string? TargetName_Arail { get; set; }
         public string? TargetName_Brail { get; set; }
+        public string? TargetReplacementName_Arail { get; set; }
+        public string? TargetReplacementName_Brail { get; set; }
         public double Reference_cant { get; set; }
         public double Current_Cant { get; set; }
         public double Reference_Twist { get; set; }
@@ -694,6 +717,8 @@ namespace gnaDataClasses
         public double Current_VA_Brail { get; set; }
         public double Current_SlewChange { get; set; }
         public double Current_GaugeChange { get; set; }
+        public double Current_Alignment_6m { get; set; }
+        public double Current_Alignment_21m { get; set; }
         public double Reference_RCant { get; set; }
         public double Current_RCant { get; set; }
         public string? TrackName { get; set; }
@@ -842,12 +867,16 @@ namespace gnaDataClasses
         public string? EmailTransmissionTime { get; set; }
         public double TimeZoneOffset { get; set; }
 
+
         // Attachments
         public List<string>? Attachments { get; set; }
 
         // Folders
         public string? SystemLogsFolder { get; set; }
 
+        // Time Zone Details
+        public string? TimeZoneID { get; set; }
+        
 
     }
 
