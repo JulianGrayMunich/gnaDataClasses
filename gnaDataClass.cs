@@ -1,9 +1,10 @@
-﻿using System;
+#region Using statements
+using System;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Reflection;
 
-
+#endregion
 
 namespace gnaDataClasses
 {
@@ -17,6 +18,7 @@ namespace gnaDataClasses
     {
          // ---- Database ----
             public string? DbConnectionString { get; init; }
+            public string? DBTrackConnectionString { get; init; }
             public string? ProjectTitle { get; init; }
             public string? ReportType { get; init; }
 
@@ -683,7 +685,8 @@ namespace gnaDataClasses
         public double? LongTwist { get; set; }
         public double? LeftTop { get; set; }
         public double? RightTop { get; set; }
-        public double? Versine { get; set; }
+        public double? RightVersine { get; set; }
+        public double? LeftVersine { get; set; }
         public double? Slew { get; set; }
     }
     public class SPN010
