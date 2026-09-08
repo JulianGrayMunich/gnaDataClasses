@@ -1,6 +1,3 @@
-using System;
-
-
 namespace gnaDataClasses
 {
     #region SMS Recipient Models

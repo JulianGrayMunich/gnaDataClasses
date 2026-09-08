@@ -1,7 +1,4 @@
 #region Using statements
-using System;
-using System.Data.Common;
-using System.Diagnostics;
 using System.Reflection;
 
 #endregion
@@ -14,16 +11,16 @@ namespace gnaDataClasses
 
     #region Environment classes
 
-        public sealed class RuntimeEnvironment
+    public sealed class RuntimeEnvironment
     {
-         // ---- Database ----
-            public string? DbConnectionString { get; init; }
-            public string? DBTrackConnectionString { get; init; }
-            public string? ProjectTitle { get; init; }
-            public string? ReportType { get; init; }
+        // ---- Database ----
+        public string? DbConnectionString { get; init; }
+        public string? DBTrackConnectionString { get; init; }
+        public string? ProjectTitle { get; init; }
+        public string? ReportType { get; init; }
 
         // Time Zone Details
-            public string? TimeZoneID { get; set; }
+        public string? TimeZoneID { get; set; }
 
         // --- System folders ---
         public string? SystemLogsFolder { get; init; } = null;
@@ -33,57 +30,57 @@ namespace gnaDataClasses
 
         // ---- Workbook ----
         public string? ExcelPath { get; init; }
-            public string? ExcelFile { get; init; }
+        public string? ExcelFile { get; init; }
 
-            // Only valid when both parts are present; otherwise null.
-            public string? MasterWorkbookFullPath =>
-                (ExcelPath is null || ExcelFile is null) ? null : ExcelPath + ExcelFile;
+        // Only valid when both parts are present; otherwise null.
+        public string? MasterWorkbookFullPath =>
+            (ExcelPath is null || ExcelFile is null) ? null : ExcelPath + ExcelFile;
 
         // --- permissions
-            public string? RecordHistoricData { get; init; }
+        public string? RecordHistoricData { get; init; }
 
         // ---- Worksheets ----
-            public string? SurveyWorksheet { get; init; }
-            public string? ReferenceWorksheet { get; init; }
-            public string? TrackGeometryWorksheet { get; init; }
-            public string? HistoricTopWorksheet { get; init; }
-            public string? HistoricdHWorksheet { get; init; }
+        public string? SurveyWorksheet { get; init; }
+        public string? ReferenceWorksheet { get; init; }
+        public string? TrackGeometryWorksheet { get; init; }
+        public string? HistoricTopWorksheet { get; init; }
+        public string? HistoricdHWorksheet { get; init; }
 
-            public string? HistoricCantWorksheet { get; init; }
-            public string? HistoricTwistWorksheet { get; init; }
-            public string? HistoricLongTwistWorksheet { get; init; }
-            public string? HistoricCoordinatesWorksheet { get; init; }
-            public string? HistoricDeltasWorksheet { get; init; }
-            public string? HistoricDRWorksheet { get; init; }
-            public string? HistoricDTWorksheet { get; init; }
-            public string? HistoricDHWorksheet { get; init; }
-            public string? HistoricDistanceWorksheet { get; init; }
-            public string? CalibrationWorksheet { get; init; }
-            public string? LatestCoordinatesWorksheet { get; init; }
-            public string? LatestTiltWorksheet { get; init; }
-            public string? HistoricTiltWorksheet { get; init; }
-            public string? HistoricDeltaTiltWorksheet { get; init; }
+        public string? HistoricCantWorksheet { get; init; }
+        public string? HistoricTwistWorksheet { get; init; }
+        public string? HistoricLongTwistWorksheet { get; init; }
+        public string? HistoricCoordinatesWorksheet { get; init; }
+        public string? HistoricDeltasWorksheet { get; init; }
+        public string? HistoricDRWorksheet { get; init; }
+        public string? HistoricDTWorksheet { get; init; }
+        public string? HistoricDHWorksheet { get; init; }
+        public string? HistoricDistanceWorksheet { get; init; }
+        public string? CalibrationWorksheet { get; init; }
+        public string? LatestCoordinatesWorksheet { get; init; }
+        public string? LatestTiltWorksheet { get; init; }
+        public string? HistoricTiltWorksheet { get; init; }
+        public string? HistoricDeltaTiltWorksheet { get; init; }
 
-            public string? HistoricDeltaTiltAWorksheet { get; init; }
-            public string? HistoricDeltaTiltBWorksheet { get; init; }
-            public string? HistoricDeltaTiltCWorksheet { get; init; }
+        public string? HistoricDeltaTiltAWorksheet { get; init; }
+        public string? HistoricDeltaTiltBWorksheet { get; init; }
+        public string? HistoricDeltaTiltCWorksheet { get; init; }
 
-            public string? LatestExtensometerWorksheet { get; init; }
-            public string? HistoricExtensometerWorksheet { get; init; }
-            public string? HistoricDeltaExtensometerWorksheet { get; init; }
-            public string? HistoricCopingWorksheet { get; init; }
-            public string? HistoricSlewWorksheet { get; init; } 
+        public string? LatestExtensometerWorksheet { get; init; }
+        public string? HistoricExtensometerWorksheet { get; init; }
+        public string? HistoricDeltaExtensometerWorksheet { get; init; }
+        public string? HistoricCopingWorksheet { get; init; }
+        public string? HistoricSlewWorksheet { get; init; }
 
-            public string? LatestPolarDisplacementsWorksheet { get; init; }
-            public string? SensorTypeWorksheet { get; init; }
-            public string? CopingWorksheet { get; init; }
+        public string? LatestPolarDisplacementsWorksheet { get; init; }
+        public string? SensorTypeWorksheet { get; init; }
+        public string? CopingWorksheet { get; init; }
 
 
         // ---- Row/Col configuration ----
-            public int? FirstDataRow { get; init; }
-            public int? FirstDataCol { get; init; }
-            public int? FirstOutputRow { get; init; }
-            public int? FirstTrackRow { get; init; }
+        public int? FirstDataRow { get; init; }
+        public int? FirstDataCol { get; init; }
+        public int? FirstOutputRow { get; init; }
+        public int? FirstTrackRow { get; init; }
 
 
 
@@ -298,7 +295,7 @@ namespace gnaDataClasses
         public bool Temperature { get; set; } = false;
         public bool Tiltmeter { get; set; } = false;
     }
-  
+
     public sealed class LengthObs
     {
         public int SensorId { get; set; }
@@ -879,7 +876,7 @@ namespace gnaDataClasses
 
         // Time Zone Details
         public string? TimeZoneID { get; set; }
-        
+
 
     }
 
