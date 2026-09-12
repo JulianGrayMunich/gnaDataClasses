@@ -282,6 +282,22 @@ namespace gnaDataClasses
         public double? Slew { get; init; }
 
         public double? Versine { get; init; }
+
+        #region Unrounded coordinates for derived calculations
+
+        public double? CalculationReferenceE { get; init; }
+
+        public double? CalculationReferenceN { get; init; }
+
+        public double? CalculationReferenceH { get; init; }
+
+        public double? CalculationCurrentE { get; init; }
+
+        public double? CalculationCurrentN { get; init; }
+
+        public double? CalculationCurrentH { get; init; }
+
+        #endregion
     }
 
 
@@ -384,6 +400,18 @@ namespace gnaDataClasses
         public double? DH { get; init; }
     }
 
+
+    public sealed class PrismTiltEpochData
+    {
+        public int ArrayId { get; init; }
+
+        public DateTime ReportUtc { get; init; }
+
+        public double? TiltXMperM { get; init; }
+
+        public double? TiltYMperM { get; init; }
+    }
+
     #endregion
 
 
@@ -425,6 +453,8 @@ namespace gnaDataClasses
 
         public bool PrismCrackGaugeCategoryReady { get; init; }
 
+        public bool PrismTiltCategoryReady { get; init; }
+
         public int ResolvedPointCount { get; init; }
 
         public int ResolvedPairCount { get; init; }
@@ -436,6 +466,8 @@ namespace gnaDataClasses
         public int TunnelConvergenceRowCount { get; init; }
 
         public int PrismCrackGaugeRowCount { get; init; }
+
+        public int PrismTiltRowCount { get; init; }
     }
 
 
@@ -462,6 +494,9 @@ namespace gnaDataClasses
             new();
 
         public List<PrismCrackGaugeEpochData> PrismCrackGaugeEpochs { get; init; } =
+            new();
+
+        public List<PrismTiltEpochData> PrismTiltEpochs { get; init; } =
             new();
 
         public DBTrackGeometryValidationSummary Validation { get; init; } =
