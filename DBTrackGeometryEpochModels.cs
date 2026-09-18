@@ -1,5 +1,20 @@
-namespace gnaDataClasses
+﻿namespace gnaDataClasses
 {
+    #region Reading freshness decisions
+
+    public enum DBTrackGeometryReadingDecision
+    {
+        Write,
+        SkippedSameReading,
+        SkippedOlderReading,
+        MissingReading,
+        InvalidTimestamp,
+        InvalidReadingData,
+        SkippedDeletedPoint
+    }
+
+    #endregion
+
     #region Captured DBTrackGeometry models
 
     public sealed class TrackPointEpochData
@@ -13,6 +28,12 @@ namespace gnaDataClasses
         public string ReplacementName { get; init; } = string.Empty;
 
         public DateTime ReportUtc { get; init; }
+
+        #region Reading freshness
+        public DateTime? LatestReading { get; init; }
+        public bool HasCurrentReadings { get; init; }
+        public int? ReadingCount { get; init; }
+        #endregion
 
         public bool IsMissing { get; init; }
 
@@ -259,6 +280,12 @@ namespace gnaDataClasses
 
         public DateTime ReportUtc { get; init; }
 
+        #region Reading freshness
+        public DateTime? LatestReading { get; init; }
+        public bool HasCurrentReadings { get; init; }
+        public int? ReadingCount { get; init; }
+        #endregion
+
         public bool IsMissing { get; init; }
 
         public bool IsConfigurationDeleted { get; init; }
@@ -499,6 +526,8 @@ namespace gnaDataClasses
         public List<PrismTiltEpochData> PrismTiltEpochs { get; init; } =
             new();
 
+        public List<DBTrackGeometryArrayIdentity> ArrayIdentities { get; init; } = new();
+
         public DBTrackGeometryValidationSummary Validation { get; init; } =
             new();
     }
@@ -534,6 +563,15 @@ namespace gnaDataClasses
         public DateTime WriteUtc { get; set; }
 
         public string Outcome { get; set; } = string.Empty;
+
+        #region Reading freshness results
+        public int WrittenPointCount { get; set; }
+        public int WrittenMissingPointCount { get; set; }
+        public int SkippedSameReadingCount { get; set; }
+        public int SkippedOlderReadingCount { get; set; }
+        public int MissingReadingCount { get; set; }
+        public int InvalidTimestampCount { get; set; }
+        #endregion
 
         public bool HistoryWriteSucceeded { get; set; }
 
